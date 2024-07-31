@@ -13,6 +13,7 @@ public class Blog {
 
     private String title;
 
+    @Column(name = "blog_text")
     private String text;
 
     @Column(name = "created_time")

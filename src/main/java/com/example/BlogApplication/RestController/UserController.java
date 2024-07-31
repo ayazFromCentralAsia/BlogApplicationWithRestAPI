@@ -1,5 +1,4 @@
-package com.example.BlogApplication.Controller;
-
+package com.example.BlogApplication.RestController;
 
 import com.example.BlogApplication.Entity.User;
 import com.example.BlogApplication.Exception.ResourceNotFoundException;
@@ -41,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> editUser(@PathVariable int id, @RequestBody User user) throws ResourceNotFoundException {
+        public ResponseEntity<HttpStatus> editUser(@PathVariable int id, @RequestBody User user) throws ResourceNotFoundException {
         userService.updateUser(id,user);
         return ResponseEntity.ok(HttpStatus.OK);
     }

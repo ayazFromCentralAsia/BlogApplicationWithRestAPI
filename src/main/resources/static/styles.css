@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.task-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    width: 100%;
+    margin: 10px;
+}
+
+.task-form h2 {
+    color: #009879;
+    margin-bottom: 10px;
+}
+
+.task-form label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #333;
+}
+
+.task-form input[type="text"],
+.task-form input[type="number"],
+.task-form textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.task-form input[type="submit"] {
+    background-color: #009879;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.task-form input[type="submit"]:hover {
+    background-color: #007f67;
+}
+
+.article-container {
+    margin-top: 20px;
+}
+
+article {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.comments {
+    margin-top: 20px;
+}
+
+.comments h3 {
+    margin-top: 0;
+}
+
+.comments p {
+    margin: 5px 0;
+}
+
+.comments form {
+    margin-top: 10px;
+}
+
+.comments form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.comments form input[type="submit"] {
+    margin-top: 10px;
+    background-color: #009879;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.comments form input[type="submit"]:hover {
+    background-color: #007f67;
+}
