@@ -31,7 +31,7 @@ public class BlogService {
         blogRepository.deleteById(id);
     }
 
-    public Blog updateBlog(int id, Blog blogDetails) throws ResourceNotFoundException {
+    public void updateBlog(int id, Blog blogDetails) throws ResourceNotFoundException {
         Blog blog = blogRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog not found for this id :: " + id));
 
@@ -39,6 +39,6 @@ public class BlogService {
         blog.setText(blogDetails.getText());
         blog.setUser(blogDetails.getUser());
 
-        return blogRepository.save(blog);
+        blogRepository.save(blog);
     }
 }

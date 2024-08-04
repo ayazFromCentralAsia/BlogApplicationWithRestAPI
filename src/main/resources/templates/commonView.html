@@ -17,7 +17,7 @@
             <input type="text" id="title" name="title" placeholder="Enter article title" required>
             <br>
             <label for="content">Content:</label>
-            <textarea id="content" name="content" placeholder="Enter article content" required></textarea>
+            <textarea type="text" id="content" name="content" placeholder="Enter article content" required></textarea>
             <br>
             <input type="submit" value="Create Article">
         </form>
@@ -55,22 +55,21 @@
     <div class="article-container">
         <div th:each="blog : ${blogs}">
             <article>
+                <h2 th:text="${blog.user.getUsername()}">Article Title</h2>
                 <h2 th:text="${blog.title}">Article Title</h2>
                 <p th:text="${blog.text}">Article Content</p>
-                <section class="comments">
-                    <h3>Comments</h3>
-                    <!-- Existing Comments -->
-                    <div th:each="comment : ${blog.comments}">
-                        <p th:text="${comment.content}">Comment</p>
-                    </div>
-                    <!-- Add Comment Form -->
-                    <form th:action="@{/view/comment/{id}(id=${article.id})}" method="post">
-                        <label for="comment" th:for="comment-${article.id}">Comment:</label>
-                        <textarea id="comment" name="content" rows="4" cols="50" placeholder="Add your comment"></textarea>
-                        <br>
-                        <input type="submit" value="Submit Comment">
-                    </form>
-                </section>
+<!--                <section class="comments">-->
+<!--                    <h3>Comments</h3>-->
+<!--                    <div th:each="comment : ${blog.comments}">-->
+<!--                        <p th:text="${comment.content}">Comment</p>-->
+<!--                    </div>-->
+<!--                    <form th:action="@{/view/comment/{id}(id=${article.id})}" method="post">-->
+<!--                        <label for="comment" th:for="comment-${article.id}">Comment:</label>-->
+<!--                        <textarea id="comment" name="content" rows="4" cols="50" placeholder="Add your comment"></textarea>-->
+<!--                        <br>-->
+<!--                        <input type="submit" value="Submit Comment">-->
+<!--                    </form>-->
+<!--                </section>-->
             </article>
         </div>
     </div>

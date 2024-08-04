@@ -1,8 +1,13 @@
 package com.example.BlogApplication.RestController;
 
 import com.example.BlogApplication.Entity.Blog;
+import com.example.BlogApplication.Entity.User;
 import com.example.BlogApplication.Exception.ResourceNotFoundException;
+import com.example.BlogApplication.Repository.UserRepository;
+import com.example.BlogApplication.RequestDTO.BlogRequest;
 import com.example.BlogApplication.Service.BlogService;
+import com.example.BlogApplication.Service.UserService;
+import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +21,14 @@ import java.util.Optional;
 @RequestMapping("/blog")
 public class BlogController {
     @Autowired
-    private final BlogService blogService;
+    private BlogService blogService;
 
-    public BlogController(BlogService blogService) {
-        this.blogService = blogService;
+    @Autowired
+    private UserService userService;
+
+    public BlogController() {
+
     }
-
 
     @GetMapping
     public List<Blog> blogList(){
@@ -34,21 +41,23 @@ public class BlogController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createUser(@RequestBody Blog blog){
+    public void createBlog(@RequestBody BlogRequest blogRequest) throws ResourceNotFoundException {
+        User user = userService.getUserById(blogRequest.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        Blog blog = new Blog();
         blog.setLocalDateTime(LocalDateTime.now());
+        blog.setUser(user);
+        blog.setText(blogRequest.getText());
+        blog.setTitle(blogRequest.getTitle());
         blogService.createBlog(blog);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> editUser(@PathVariable int id, @RequestBody Blog blog) throws ResourceNotFoundException {
+    public void editBlog(@PathVariable int id, @RequestBody Blog blog) throws ResourceNotFoundException {
         blogService.updateBlog(id,blog);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id){
+    public void deleteUser(@PathVariable int id){
         blogService.deleteBlog(id);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

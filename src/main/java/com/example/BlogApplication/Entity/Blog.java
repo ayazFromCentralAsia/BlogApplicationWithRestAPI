@@ -13,6 +13,10 @@ public class Blog {
 
     private String title;
 
+    public Blog() {
+    }
+
+
     @Column(name = "blog_text")
     private String text;
 
@@ -62,4 +66,15 @@ public class Blog {
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
     }
+    @Override
+    public String toString() {
+        return "Blog{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", localDateTime=" + localDateTime +
+                ", user=" + user +
+                '}';
+    }
+
 }

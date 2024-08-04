@@ -2,7 +2,6 @@ package com.example.BlogApplication.Entity;
 
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ValueGenerationType;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +11,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
+    public User() {
+    }
+
     @Column(name = "username")
     private String username;
 
@@ -20,6 +23,7 @@ public class User {
 
     @Column(name = "created_time")
     private LocalDateTime localDateTime;
+
 
     @Override
     public String toString() {
@@ -31,7 +35,7 @@ public class User {
                 '}';
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
