@@ -58,18 +58,18 @@
                 <h2 th:text="${blog.user.getUsername()}">Article Title</h2>
                 <h2 th:text="${blog.title}">Article Title</h2>
                 <p th:text="${blog.text}">Article Content</p>
-<!--                <section class="comments">-->
-<!--                    <h3>Comments</h3>-->
-<!--                    <div th:each="comment : ${blog.comments}">-->
-<!--                        <p th:text="${comment.content}">Comment</p>-->
-<!--                    </div>-->
-<!--                    <form th:action="@{/view/comment/{id}(id=${article.id})}" method="post">-->
-<!--                        <label for="comment" th:for="comment-${article.id}">Comment:</label>-->
-<!--                        <textarea id="comment" name="content" rows="4" cols="50" placeholder="Add your comment"></textarea>-->
-<!--                        <br>-->
-<!--                        <input type="submit" value="Submit Comment">-->
-<!--                    </form>-->
-<!--                </section>-->
+                <section class="comments">
+                    <h3>Comments</h3>
+                    <div th:each="comment : ${blog.comment}">
+                        <p th:text="${comment.comment}">Comment</p>
+                    </div>
+                    <form th:action="@{/view/comment/{id}(id=${article.id})}" method="post">
+                        <label for="comment" th:for="comment-${article.id}">Comment:</label>
+                        <textarea id="comment" name="content" rows="4" cols="50" placeholder="Add your comment"></textarea>
+                        <br>
+                        <input type="submit" value="Submit Comment">
+                    </form>
+                </section>
             </article>
         </div>
     </div>

@@ -40,7 +40,7 @@ public class CommonViewController {
         BlogRequest blog = new BlogRequest();
         blog.setTitle(title);
         blog.setText(content);
-        blog.setUserId(3);
+        blog.setUser_id(3);
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<BlogRequest> request = new HttpEntity<>(blog,headers);
         restTemplate.postForEntity("http://localhost:8080/blog", request, BlogRequest.class).getStatusCode();

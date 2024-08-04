@@ -1,11 +1,13 @@
 package com.example.BlogApplication.RestController;
 
 import com.example.BlogApplication.Entity.Blog;
+import com.example.BlogApplication.Entity.Comment;
 import com.example.BlogApplication.Entity.User;
 import com.example.BlogApplication.Exception.ResourceNotFoundException;
 import com.example.BlogApplication.Repository.UserRepository;
 import com.example.BlogApplication.RequestDTO.BlogRequest;
 import com.example.BlogApplication.Service.BlogService;
+import com.example.BlogApplication.Service.CommentService;
 import com.example.BlogApplication.Service.UserService;
 import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ import java.util.Optional;
 public class BlogController {
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     private UserService userService;
@@ -42,10 +47,12 @@ public class BlogController {
 
     @PostMapping
     public void createBlog(@RequestBody BlogRequest blogRequest) throws ResourceNotFoundException {
-        User user = userService.getUserById(blogRequest.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        User user = userService.getUserById(blogRequest.getUser_id()).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        Comment comment = commentService.getCommentById(blogRequest.getComment_id()).orElseThrow(() -> new ResourceNotFoundException("Comment not have"));
         Blog blog = new Blog();
         blog.setLocalDateTime(LocalDateTime.now());
         blog.setUser(user);
+        blog.setCommentList();
         blog.setText(blogRequest.getText());
         blog.setTitle(blogRequest.getTitle());
         blogService.createBlog(blog);

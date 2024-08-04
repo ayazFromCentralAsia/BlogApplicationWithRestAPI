@@ -3,7 +3,11 @@ package com.example.BlogApplication.Entity;
 
 import jakarta.persistence.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "blog")
 public class Blog {
@@ -25,8 +29,15 @@ public class Blog {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
+    @OneToMany
+    @JoinColumn(name = "comment_id")
+    @Min(10)
+    @Max(300)
+    private List<Comment> commentList;
+// not sure
     public User getUser() {
         return user;
     }
@@ -37,6 +48,14 @@ public class Blog {
 
     public int getId() {
         return id;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     public void setId(int id) {

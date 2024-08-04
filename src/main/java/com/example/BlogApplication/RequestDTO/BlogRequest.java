@@ -4,8 +4,25 @@ public class BlogRequest {
     private String title;
     private String text;
     private String createdTime;
-    private int userId;
+    private int user_id;
 
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public int getComment_id() {
+        return comment_id;
+    }
+
+    public void setComment_id(int comment_id) {
+        this.comment_id = comment_id;
+    }
+
+    private int comment_id;
     public String getTitle() {
         return title;
     }
@@ -30,11 +47,4 @@ public class BlogRequest {
         this.createdTime = createdTime;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 }
