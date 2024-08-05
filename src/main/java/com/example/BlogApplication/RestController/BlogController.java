@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,13 +50,13 @@ public class BlogController {
     @PostMapping
     public void createBlog(@RequestBody BlogRequest blogRequest) throws ResourceNotFoundException {
         User user = userService.getUserById(blogRequest.getUser_id()).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
-        Comment comment = commentService.getCommentById(blogRequest.getComment_id()).orElseThrow(() -> new ResourceNotFoundException("Comment not have"));
+        System.out.println("Work????????????????????????/");
         Blog blog = new Blog();
         blog.setLocalDateTime(LocalDateTime.now());
         blog.setUser(user);
-        blog.setCommentList();
         blog.setText(blogRequest.getText());
         blog.setTitle(blogRequest.getTitle());
+        System.out.println("Work????????????????????????/");
         blogService.createBlog(blog);
     }
 

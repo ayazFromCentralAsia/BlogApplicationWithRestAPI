@@ -1,12 +1,14 @@
 package com.example.BlogApplication.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "blog")
@@ -32,12 +34,15 @@ public class Blog {
     @NotNull
     private User user;
 
-    @OneToMany
-    @JoinColumn(name = "comment_id")
-    @Min(10)
-    @Max(300)
-    private List<Comment> commentList;
-// not sure
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Comment> comments = new ArrayList<>();
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
     public User getUser() {
         return user;
     }
@@ -48,14 +53,6 @@ public class Blog {
 
     public int getId() {
         return id;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
     }
 
     public void setId(int id) {

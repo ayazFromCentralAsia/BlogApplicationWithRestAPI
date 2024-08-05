@@ -1,8 +1,10 @@
 package com.example.BlogApplication.ViewController;
 
 import com.example.BlogApplication.Entity.Blog;
+import com.example.BlogApplication.Entity.Comment;
 import com.example.BlogApplication.Entity.User;
 import com.example.BlogApplication.RequestDTO.BlogRequest;
+import com.example.BlogApplication.Service.CommentService;
 import com.example.BlogApplication.Service.UserService;
 import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -20,6 +24,8 @@ import java.util.Optional;
 public class CommonViewController {
     @Autowired
     private final UserService userService;
+    @Autowired
+    private CommentService commentService;
 
     public CommonViewController(UserService userService) {
         this.userService = userService;
@@ -29,6 +35,15 @@ public class CommonViewController {
     public String getAllUsers(Model model){
         RestTemplate restTemplate = new RestTemplate();
         Blog[] blogs = restTemplate.getForObject("http://localhost:8080/blog",Blog[].class);
+        List<Comment> commentList = commentService.getAllComments();
+        System.out.println("is Work!");
+        for (Blog blog : blogs){
+            for (Comment comment :commentList){
+                if (blog.getId() == comment.getBlog().getId()){
+                    blog.getComments().add(comment);
+                }
+            }
+        }
         model.addAttribute("blogs", blogs);
         return "commonView";
     }

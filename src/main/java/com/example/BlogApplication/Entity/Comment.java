@@ -1,6 +1,7 @@
 package com.example.BlogApplication.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "blog_id")
+    @JsonBackReference
     private Blog blog;
 
 
