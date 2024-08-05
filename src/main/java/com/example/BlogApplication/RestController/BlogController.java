@@ -50,13 +50,11 @@ public class BlogController {
     @PostMapping
     public void createBlog(@RequestBody BlogRequest blogRequest) throws ResourceNotFoundException {
         User user = userService.getUserById(blogRequest.getUser_id()).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
-        System.out.println("Work????????????????????????/");
         Blog blog = new Blog();
         blog.setLocalDateTime(LocalDateTime.now());
         blog.setUser(user);
         blog.setText(blogRequest.getText());
         blog.setTitle(blogRequest.getTitle());
-        System.out.println("Work????????????????????????/");
         blogService.createBlog(blog);
     }
 
