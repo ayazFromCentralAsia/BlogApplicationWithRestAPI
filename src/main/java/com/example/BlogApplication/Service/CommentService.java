@@ -16,16 +16,16 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public List<Comment> getAllComments() {
+    public List<Comment> getAllComments(){
         return commentRepository.findAll();
     }
 
-    public Optional<Comment> getCommentById(int id) {
+    public Optional<Comment> getCommentById(int id) throws ResourceNotFoundException{
         return commentRepository.findById(id);
     }
 
-    public Comment createComment(Comment comment) {
-        return commentRepository.save(comment);
+    public void createComment(Comment comment) {
+        commentRepository.save(comment);
     }
 
     public void deleteComment(int id) {

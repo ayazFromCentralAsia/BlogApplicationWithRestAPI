@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/user")
@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable int id){
-        return userService.getUserById(id);
+    public User getUser(@PathVariable int id) throws ResourceNotFoundException{
+        return userService.getUserById(id).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
     }
 
     @PostMapping

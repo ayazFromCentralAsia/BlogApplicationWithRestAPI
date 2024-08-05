@@ -3,7 +3,9 @@ package com.example.BlogApplication.ViewController;
 import com.example.BlogApplication.Entity.Blog;
 import com.example.BlogApplication.Entity.Comment;
 import com.example.BlogApplication.Entity.User;
+import com.example.BlogApplication.Exception.ResourceNotFoundException;
 import com.example.BlogApplication.RequestDTO.BlogRequest;
+import com.example.BlogApplication.Service.BlogService;
 import com.example.BlogApplication.Service.CommentService;
 import com.example.BlogApplication.Service.UserService;
 import org.hibernate.grammars.hql.HqlParser;
@@ -26,6 +28,8 @@ public class CommonViewController {
     private final UserService userService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private BlogService blogService;
 
     public CommonViewController(UserService userService) {
         this.userService = userService;
@@ -36,7 +40,6 @@ public class CommonViewController {
         RestTemplate restTemplate = new RestTemplate();
         Blog[] blogs = restTemplate.getForObject("http://localhost:8080/blog",Blog[].class);
         List<Comment> commentList = commentService.getAllComments();
-        System.out.println("is Work!");
         for (Blog blog : blogs){
             for (Comment comment :commentList){
                 if (blog.getId() == comment.getBlog().getId()){
@@ -48,6 +51,16 @@ public class CommonViewController {
         return "commonView";
     }
 
+    @PostMapping("/comment/{id}")
+    public String saveComment(@PathVariable int id, @RequestParam String content, @RequestParam int blogId) throws ResourceNotFoundException {
+        Comment comment = new Comment();
+        Blog blog = blogService.getBlogById(blogId).orElseThrow(() -> new ResourceNotFoundException("This Shit Is Bitch Not Found"));
+        comment.setId(id);
+        comment.setComment(content);
+        comment.setBlog(blog);
+        commentService.createComment(comment);
+        return "redirect:/view";
+    }
     @PostMapping("/add")
     public String saveBlog(@RequestParam String title,
                          @RequestParam String content){

@@ -63,9 +63,10 @@
                     <div th:each="comment : ${blog.getComments()}">
                         <p th:text="${comment.getComment()}">Comment</p>
                     </div>
-                    <form th:action="@{/view/comment/{id}(id=${article.id})}" method="post">
-                        <label for="comment" th:for="comment-${article.id}">Comment:</label>
-                        <textarea id="comment" name="content" rows="4" cols="50" placeholder="Add your comment"></textarea>
+                    <form th:action="@{/view/comment/{id}(id=${blog.id})}" method="post">
+                        <input type="hidden" name="blogId" th:value="${blog.id}">
+                        <label th:for="${'comment-' + blog.id}">Comment:</label>
+                        <textarea id="comment-${blog.id}" name="content" rows="4" cols="50" placeholder="Add your comment"></textarea>
                         <br>
                         <input type="submit" value="Submit Comment">
                     </form>

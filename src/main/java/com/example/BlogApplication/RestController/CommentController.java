@@ -1,7 +1,10 @@
 package com.example.BlogApplication.RestController;
 
+import com.example.BlogApplication.Entity.Blog;
 import com.example.BlogApplication.Entity.Comment;
 import com.example.BlogApplication.Exception.ResourceNotFoundException;
+import com.example.BlogApplication.RequestDTO.CommentRequest;
+import com.example.BlogApplication.Service.BlogService;
 import com.example.BlogApplication.Service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/comment")
@@ -18,8 +20,12 @@ public class CommentController {
     @Autowired
     private final CommentService commentService;
 
-    public CommentController(CommentService commentService) {
+    @Autowired
+    private final BlogService blogService;
+
+    public CommentController(CommentService commentService, BlogService blogService) {
         this.commentService = commentService;
+        this.blogService = blogService;
     }
 
 
@@ -29,13 +35,17 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Comment> getComment(@PathVariable int id){
-        return commentService.getCommentById(id);
+    public Comment getComment(@PathVariable int id) throws ResourceNotFoundException {
+        return commentService.getCommentById(id).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createComment(@RequestBody Comment comment){
+    public ResponseEntity<HttpStatus> createComment(@RequestBody CommentRequest commentRequest) throws ResourceNotFoundException {
+        Comment comment = new Comment();
+        Blog blog = blogService.getBlogById(commentRequest.getBlog_id()).orElseThrow(() -> new ResourceNotFoundException("BlogNot Find"));
         comment.setLocalDateTime(LocalDateTime.now());
+        comment.setBlog(blog);
+        comment.setComment(commentRequest.getComment());
         commentService.createComment(comment);
         return ResponseEntity.ok(HttpStatus.OK);
     }

@@ -24,8 +24,8 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public void createUser(User user) {
+        userRepository.save(user);
     }
 
     public User updateUser(int id, User userDetails) throws ResourceNotFoundException {
