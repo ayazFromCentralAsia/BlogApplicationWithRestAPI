@@ -2,6 +2,7 @@ package com.example.BlogApplication.RestController;
 
 import com.example.BlogApplication.Entity.Blog;
 import com.example.BlogApplication.Entity.Comment;
+import com.example.BlogApplication.Exception.DatabaseException;
 import com.example.BlogApplication.Exception.ResourceNotFoundException;
 import com.example.BlogApplication.RequestDTO.CommentRequest;
 import com.example.BlogApplication.Service.BlogService;
@@ -36,13 +37,17 @@ public class CommentController {
 
     @GetMapping("/{id}")
     public Comment getComment(@PathVariable int id) throws ResourceNotFoundException {
-        return commentService.getCommentById(id).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+        try {
+            return commentService.getCommentById(id);
+        }catch (ResourceNotFoundException e){
+            throw new ResourceNotFoundException("Entity was not found " + e);
+        }
     }
 
     @PostMapping
     public ResponseEntity<HttpStatus> createComment(@RequestBody CommentRequest commentRequest) throws ResourceNotFoundException {
         Comment comment = new Comment();
-        Blog blog = blogService.getBlogById(commentRequest.getBlog_id()).orElseThrow(() -> new ResourceNotFoundException("BlogNot Find"));
+        Blog blog = blogService.getBlogById(commentRequest.getBlog_id());
         comment.setLocalDateTime(LocalDateTime.now());
         comment.setBlog(blog);
         comment.setComment(commentRequest.getComment());
@@ -51,8 +56,12 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> editComment(@PathVariable int id, @RequestBody Comment comment) throws ResourceNotFoundException {
+    public ResponseEntity<HttpStatus> editComment(@PathVariable int id, @RequestBody Comment comment) throws ResourceNotFoundException, DatabaseException {
+        try {
         commentService.updateComment(id,comment);
+        } catch (ResourceNotFoundException | DatabaseException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

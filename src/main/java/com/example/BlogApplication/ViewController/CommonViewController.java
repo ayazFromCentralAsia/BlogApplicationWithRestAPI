@@ -3,6 +3,9 @@ package com.example.BlogApplication.ViewController;
 import com.example.BlogApplication.Entity.Blog;
 import com.example.BlogApplication.Entity.Comment;
 import com.example.BlogApplication.Entity.User;
+import com.example.BlogApplication.Exception.CommonViewAddException;
+import com.example.BlogApplication.Exception.CommonViewSavingException;
+import com.example.BlogApplication.Exception.CommonViewUpdateException;
 import com.example.BlogApplication.Exception.ResourceNotFoundException;
 import com.example.BlogApplication.RequestDTO.BlogRequest;
 import com.example.BlogApplication.Service.BlogService;
@@ -53,44 +56,60 @@ public class CommonViewController {
 
     @PostMapping("/comment/{id}")
     public String saveComment(@PathVariable int id, @RequestParam String content, @RequestParam int blogId) throws ResourceNotFoundException {
-        Comment comment = new Comment();
-        Blog blog = blogService.getBlogById(blogId).orElseThrow(() -> new ResourceNotFoundException("This Shit Is Bitch Not Found"));
-        comment.setId(id);
-        comment.setComment(content);
-        comment.setBlog(blog);
-        commentService.createComment(comment);
+        try {
+            Comment comment = new Comment();
+            Blog blog = blogService.getBlogById(blogId);
+            comment.setId(id);
+            comment.setComment(content);
+            comment.setBlog(blog);
+            commentService.createComment(comment);
+        } catch (CommonViewSavingException e ){
+            throw new CommonViewSavingException(e);
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(e);
+        }
         return "redirect:/view";
     }
     @PostMapping("/add")
     public String saveBlog(@RequestParam String title,
                          @RequestParam String content){
-        RestTemplate restTemplate = new RestTemplate();
-        BlogRequest blog = new BlogRequest();
-        blog.setTitle(title);
-        blog.setText(content);
-        blog.setUser_id(3);
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<BlogRequest> request = new HttpEntity<>(blog,headers);
-        restTemplate.postForEntity("http://localhost:8080/blog", request, BlogRequest.class).getStatusCode();
-        return "redirect:/view";
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            BlogRequest blog = new BlogRequest();
+            blog.setTitle(title);
+            blog.setText(content);
+            blog.setUser_id(3);
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<BlogRequest> request = new HttpEntity<>(blog, headers);
+            restTemplate.postForEntity("http://localhost:8080/blog", request, BlogRequest.class).getStatusCode();
+        }catch (CommonViewAddException e){
+            throw new CommonViewAddException(e);
+        }finally {
+            return "redirect:/view";
+        }
     }
 
     @PostMapping("/edit")
     public String editBlog(@RequestParam int id,
                            @RequestParam String title,
                            @RequestParam String content){
-        RestTemplate restTemplate = new RestTemplate();
-        Blog blog = restTemplate.getForObject("http://localhost:8080/blog/"+id, Blog.class);
-        if (!title.isBlank()){
-            blog.setTitle(title);
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            Blog blog = restTemplate.getForObject("http://localhost:8080/blog/" + id, Blog.class);
+            if (!title.isBlank()) {
+                blog.setTitle(title);
+            }
+            if (!content.isBlank()) {
+                blog.setText(content);
+            }
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<Blog> request = new HttpEntity<>(blog, headers);
+            restTemplate.put("http://localhost:8080/blog/" + id, request, Blog.class);
+        } catch (CommonViewUpdateException e){
+            throw new CommonViewUpdateException(e);
+        }finally {
+            return "redirect:/view";
         }
-        if (!content.isBlank()){
-            blog.setText(content);
-        }
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Blog> request = new HttpEntity<>(blog,headers);
-        restTemplate.put("http://localhost:8080/blog/"+id, request, Blog.class);
-        return "redirect:/view";
     }
 
     @PostMapping("/delete")

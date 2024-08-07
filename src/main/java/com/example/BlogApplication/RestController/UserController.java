@@ -1,6 +1,7 @@
 package com.example.BlogApplication.RestController;
 
 import com.example.BlogApplication.Entity.User;
+import com.example.BlogApplication.Exception.DatabaseException;
 import com.example.BlogApplication.Exception.ResourceNotFoundException;
 import com.example.BlogApplication.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable int id) throws ResourceNotFoundException{
-        return userService.getUserById(id).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+        try {
+            return userService.getUserById(id);
+        }catch (ResourceNotFoundException e){
+            throw new ResourceNotFoundException("Entity was not found " + e);
+        }
     }
 
     @PostMapping
@@ -41,8 +46,12 @@ public class UserController {
 
     @PutMapping("/{id}")
         public ResponseEntity<HttpStatus> editUser(@PathVariable int id, @RequestBody User user) throws ResourceNotFoundException {
-        userService.updateUser(id,user);
-        return ResponseEntity.ok(HttpStatus.OK);
+        try {
+            userService.updateUser(id,user);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (ResourceNotFoundException | DatabaseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @DeleteMapping("/{id}")
