@@ -10,11 +10,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-
-    public User() {
-    }
-
     @Column(name = "username")
     private String username;
 
@@ -23,6 +18,13 @@ public class User {
 
     @Column(name = "created_time")
     private LocalDateTime localDateTime;
+
+    @Column(name = "user_role")
+    private String userRole;
+
+
+    @Column(name = "password")
+    private String password;
 
 
     @Override
@@ -33,6 +35,26 @@ public class User {
                 ", age=" + age +
                 ", localDateTime=" + localDateTime +
                 '}';
+    }
+
+    public User() {
+    }
+
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getId() {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
     <meta charset="UTF-8">
     <title>My Blog</title>
@@ -66,7 +67,8 @@
                     <form th:action="@{/view/comment/{id}(id=${blog.id})}" method="post">
                         <input type="hidden" name="blogId" th:value="${blog.id}">
                         <label th:for="${'comment-' + blog.id}">Comment:</label>
-                        <textarea id="comment-${blog.id}" name="content" rows="4" cols="50" placeholder="Add your comment"></textarea>
+                        <textarea id="comment-${blog.id}" name="content" rows="4" cols="50"
+                                  placeholder="Add your comment"></textarea>
                         <br>
                         <input type="submit" value="Submit Comment">
                     </form>

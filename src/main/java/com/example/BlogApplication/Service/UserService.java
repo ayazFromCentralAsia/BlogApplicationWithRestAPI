@@ -6,10 +6,14 @@ import com.example.BlogApplication.Exception.DatabaseException;
 import com.example.BlogApplication.Exception.InvalidDataException;
 import com.example.BlogApplication.Exception.ResourceNotFoundException;
 import com.example.BlogApplication.Repository.UserRepository;
+import com.example.BlogApplication.Security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -38,7 +42,15 @@ public class UserService {
             throw new InvalidDataException("Entity was not created" + e);
         }
     }
-
+    public int getUserId() throws ResourceNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        int id = -1;
+        if (authentication != null && authentication.getPrincipal() instanceof MyUserDetails) {
+            MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+            id = myUserDetails.getID();
+        }
+        return id;
+    }
     public void updateUser(int id, User userDetails) throws ResourceNotFoundException {
         try {
             User user = userRepository.findById(id)
@@ -59,5 +71,9 @@ public class UserService {
         } catch (DatabaseException e){
             throw new DatabaseException("Delete was not successful " + e);
         }
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return  userRepository.findByUsername(username);
     }
 }

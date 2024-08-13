@@ -9,7 +9,9 @@ import com.example.BlogApplication.Repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class CommentService {
@@ -33,6 +35,7 @@ public class CommentService {
 
     public void createComment(Comment comment) {
         try {
+            comment.setLocalDateTime(LocalDateTime.now());
             commentRepository.save(comment);
         }catch (InvalidDataException e){
             throw new InvalidDataException("Entity was not created" + e);

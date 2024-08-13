@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/stylesUser.css}">
+</head>
+<body>
+<main>
+    <h1>Articles</h1>
+    <div class="article-container">
+        <div th:each="blog : ${blogs}">
+            <article>
+                <h2 th:text="${blog.user.getUsername()}">Article Title</h2>
+                <h2 th:text="${blog.title}">Article Title</h2>
+                <p th:text="${blog.text}">Article Content</p>
+                <section class="comments">
+                    <h3>Comments</h3>
+                    <div th:each="comment : ${blog.getComments()}">
+                        <p th:text="${comment.getComment()}">Comment</p>
+                    </div>
+                    <form th:action="@{/userView/comment/{id}(id=${blog.id})}" method="post">
+                        <input type="hidden" name="blogId" th:value="${blog.id}">
+                        <label th:for="${'comment-' + blog.id}">Comment:</label>
+                        <textarea id="comment-${blog.id}" name="content" rows="4" cols="50"
+                                  placeholder="Add your comment"></textarea>
+                        <br>
+                        <input type="submit" value="Submit Comment">
+                    </form>
+                </section>
+            </article>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -59,9 +59,9 @@ public class CommonViewController {
         try {
             Comment comment = new Comment();
             Blog blog = blogService.getBlogById(blogId);
-            comment.setId(id);
             comment.setComment(content);
             comment.setBlog(blog);
+            comment.setUser(userService.getUserById(userService.getUserId()));
             commentService.createComment(comment);
         } catch (CommonViewSavingException e ){
             throw new CommonViewSavingException(e);
@@ -78,7 +78,7 @@ public class CommonViewController {
             BlogRequest blog = new BlogRequest();
             blog.setTitle(title);
             blog.setText(content);
-            blog.setUser_id(3);
+            blog.setUser_id(userService.getUserId());
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<BlogRequest> request = new HttpEntity<>(blog, headers);
             restTemplate.postForEntity("http://localhost:8080/blog", request, BlogRequest.class).getStatusCode();

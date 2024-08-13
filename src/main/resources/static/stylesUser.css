@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.article-container {
+    margin-top: 20px;
+}
+
+article {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.comments {
+    margin-top: 20px;
+}
+
+.comments h3 {
+    margin-top: 0;
+}
+
+.comments p {
+    margin: 5px 0;
+}
+
+.comments form {
+    margin-top: 10px;
+}
+
+.comments form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.comments form input[type="submit"] {
+    margin-top: 10px;
+    background-color: #009879;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.comments form input[type="submit"]:hover {
+    background-color: #007f67;
+}
